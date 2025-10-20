@@ -1,17 +1,21 @@
 {
   "configurations": [
     {
-      "name": "windows-gcc-x86",
+      "name": "Linux",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "${workspaceFolder}",
+        "/usr/include/SDL2"
       ],
-      "compilerPath": "C:/MinGW/bin/gcc.exe",
-      "cStandard": "${default}",
-      "cppStandard": "${default}",
-      "intelliSenseMode": "windows-gcc-x86",
-      "compilerArgs": [
-        ""
-      ]
+      "defines": [],
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-gcc-x64",
+      "browse": {
+        "path": ["${workspaceFolder}", "/usr/include/SDL2", "/usr/include"],
+        "limitSymbolsToIncludedHeaders": true
+      }
     }
   ],
   "version": 4
