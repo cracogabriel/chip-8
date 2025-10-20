@@ -1,2 +1,4 @@
 *.o
 .github
+chip8
+.build

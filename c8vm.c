@@ -1,6 +1,8 @@
 #include "c8vm.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <SDL2/SDL.h>
 
 void VM_Inicializar(VM* vm, uint16_t pc_inicial){
     memset(vm->RAM, 0, sizeof(vm->RAM));
@@ -68,7 +70,7 @@ void VM_TickTimers(VM* vm){
 void VM_ExecutarInstrucao(VM* vm){
     /* fetch */
     uint16_t inst = (vm->RAM[vm->PC] << 8) | vm->RAM[vm->PC+1];
-    printf("Instrução: 0x%04X\n", inst);
+    // printf("Instrução: 0x%04X\n", inst); // Debug: descomente para ver instruções
 
     /* incrementa PC para próxima instrução (algumas instruções sobrescrevem) */
     vm->PC += 2;
@@ -283,14 +285,12 @@ void VM_ExecutarInstrucao(VM* vm){
                     for(uint8_t i = 0; i <= X; i++){
                         vm->RAM[vm->I + i] = vm->V[i];
                     }
-                    /* Nota: alguns interpreters incrementam I += X + 1; especificação original não */
                     break;
                 }
                 case 0x65: { // FX65 LD V0..Vx, [I]
                     for(uint8_t i = 0; i <= X; i++){
                         vm->V[i] = vm->RAM[vm->I + i];
                     }
-                    /* Nota: alguns interpreters incrementam I += X + 1; especificação original não */
                     break;
                 }
                 default:
@@ -315,10 +315,44 @@ void VM_ImprimirRegistradores(VM* vm) {
     printf("\n");
 }
 
-// void VM_ImprimirRegistradores(VM* vm) {
-//     printf("PC: 0x%04X I: 0x%04X SP: 0x%02X\n", vm->PC, vm->I, vm->SP);
-//     for(int i = 0; i < 16; i++) {
-//         printf("V[%X]: 0x%02X ", i, vm->V[i]);
-//     }
-//     printf("\n");
-// }
+void VM_ProcessarInput(VM* vm, int* running) {
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) {
+        if (e.type == SDL_QUIT) {
+            *running = 0;
+        } else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
+            uint8_t value = (e.type == SDL_KEYDOWN) ? 1 : 0;
+
+            // Mapeamento do teclado CHIP-8:
+            // Layout original:     Mapeamento no teclado:
+            // 1 2 3 C              1 2 3 4
+            // 4 5 6 D              Q W E R
+            // 7 8 9 E              A S D F
+            // A 0 B F              Z X C V
+
+            switch (e.key.keysym.sym) {
+                case SDLK_1: vm->keys[0x1] = value; break; 
+                case SDLK_2: vm->keys[0x2] = value; break;
+                case SDLK_3: vm->keys[0x3] = value; break;
+                case SDLK_4: vm->keys[0xC] = value; break;
+
+                case SDLK_q: vm->keys[0x4] = value; break;
+                case SDLK_w: vm->keys[0x5] = value; break;
+                case SDLK_e: vm->keys[0x6] = value; break;
+                case SDLK_r: vm->keys[0xD] = value; break;
+
+                case SDLK_a: vm->keys[0x7] = value; break;
+                case SDLK_s: vm->keys[0x8] = value; break;
+                case SDLK_d: vm->keys[0x9] = value; break;
+                case SDLK_f: vm->keys[0xE] = value; break;
+
+                case SDLK_z: vm->keys[0xA] = value; break;
+                case SDLK_x: vm->keys[0x0] = value; break;
+                case SDLK_c: vm->keys[0xB] = value; break;
+                case SDLK_v: vm->keys[0xF] = value; break;
+
+                case SDLK_ESCAPE: *running = 0; break; 
+            }
+        }
+    }
+}

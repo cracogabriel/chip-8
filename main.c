@@ -1,5 +1,6 @@
 #include "c8vm.h"
 #include "display.h"
+#include "sound.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
@@ -12,6 +13,12 @@ int main(int argc, char* argv[]) {
     int scale = (argc >= 3) ? atoi(argv[2]) : 10;
     Display d;
     if (!Display_Inicializar(&d, scale)) return 1;
+
+    Sound sound;
+    if (!Sound_Inicializar(&sound)) {
+        Display_Destruir(&d);
+        return 1;
+    }
 
     VM vm;
     VM_Inicializar(&vm, 0x200);
@@ -32,19 +39,8 @@ int main(int argc, char* argv[]) {
         last = now;
         acc_timer += dt;
 
-        SDL_Event e;
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) running = 0;
-            if (e.type == SDL_KEYDOWN) {
-                if (e.key.keysym.sym == SDLK_ESCAPE) running = 0;
-                // Exemplo de mapeamento de teclas:
-                // Chip-8 usa 0x0–0xF (hex keypad)
-                // Aqui você pode mapear teclas a vm.keys[...]
-            }
-            if (e.type == SDL_KEYUP) {
-                // liberar tecla correspondente
-            }
-        }
+        // Processa input do teclado
+        VM_ProcessarInput(&vm, &running);
 
         VM_ExecutarInstrucao(&vm);
 
@@ -54,10 +50,14 @@ int main(int argc, char* argv[]) {
             acc_timer -= MS_PER_TIMER;
         }
 
+        // Atualiza o som baseado no sound_timer
+        Sound_Atualizar(&sound, vm.sound_timer);
+
         Display_Atualizar(&d, vm.DISPLAY);
         SDL_Delay((int)MS_PER_TICK);
     }
 
+    Sound_Destruir(&sound);
     Display_Destruir(&d);
     return 0;
 }

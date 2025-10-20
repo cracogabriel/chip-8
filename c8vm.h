@@ -22,3 +22,4 @@ void VM_ImprimirRegistradores(VM* vm);
 
 /* Helpers úteis */
 void VM_TickTimers(VM* vm); /* decrementa delay & sound timers (chamar a 60Hz) */
+void VM_ProcessarInput(VM* vm, int* running); /* processa input do teclado */
