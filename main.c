@@ -2,6 +2,7 @@
 #include "display.h"
 #include "sound.h"
 #include "util.h"
+#include "defs.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +17,8 @@ int main(int argc, char* argv[]) {
     } else if (parse_status != 0) {
         return 1; // Erro de parsing (mensagens já exibidas)
     }
+
+
 
     const int TIMER_HZ = 60; // frequencia dos timers
 
@@ -37,6 +40,20 @@ int main(int argc, char* argv[]) {
 
     double acc_timer = 0;
     uint32_t last = SDL_GetTicks();
+
+
+    #if DEBUG
+        printf("\n\nDEBUG MODE ON!!! 🔥🔥 \n\n");
+
+        printf("[DEBUG] Iniciando CHIP-8 com as seguintes cfg:\n");
+        printf("-> ROM: %s\n", cfg.rom_path);
+        printf("-> Scale: %d (janela %dx%d)\n", cfg.scale, 64 * cfg.scale, 32 * cfg.scale);
+        printf("-> Clock: %d Hz\n", cfg.clock_hz);
+        printf("-> Load Address: 0x%04X\n", cfg.load_addr);
+        printf("\n\n");
+
+        SDL_Delay(2500); // Dorme por 2.5s para mostrar configurações iniciais
+    #endif
 
     int running = 1;
     while (running) {

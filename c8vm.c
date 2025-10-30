@@ -1,4 +1,5 @@
 #include "c8vm.h"
+#include "defs.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -68,11 +69,12 @@ void VM_TickTimers(VM* vm){
 }
 
 void VM_ExecutarInstrucao(VM* vm){
-    /* fetch */
     uint16_t inst = (vm->RAM[vm->PC] << 8) | vm->RAM[vm->PC+1];
-    // printf("Instrução: 0x%04X\n", inst); // Debug: descomente para ver instruções
+    #if DEBUG
+        printf("[DEBUG] Instrução: 0x%04X\n", inst);
+    #endif
 
-    /* incrementa PC para próxima instrução (algumas instruções sobrescrevem) */
+    /* incrementa PC para próxima instrução */
     vm->PC += 2;
 
     uint8_t grupo = (inst >> 12) & 0xF;
@@ -93,8 +95,6 @@ void VM_ExecutarInstrucao(VM* vm){
                 }
                 vm->SP--;
                 vm->PC = vm->stack[vm->SP];
-            } else {
-                /* 0NNN SYS addr (ignorado em emuladores modernos) */
             }
             break;
 

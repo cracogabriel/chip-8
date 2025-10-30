@@ -53,6 +53,9 @@ int Sound_Inicializar(Sound* sound) {
 }
 
 void Sound_IniciarBeep(Sound* sound) {
+    #if DEBUG
+        printf("[DEBUG] Som TOCANDO (beep ON)\n");
+    #endif
     if (!sound->is_playing) {
         sound->is_playing = 1;
         sound->phase = 0.0; // Reseta fase para evitar clique
@@ -61,6 +64,9 @@ void Sound_IniciarBeep(Sound* sound) {
 
 void Sound_PararBeep(Sound* sound) {
     sound->is_playing = 0;
+    #if DEBUG
+        printf("[DEBUG] Som PARADO (beep OFF)\n");
+    #endif
 }
 
 void Sound_Atualizar(Sound* sound, uint8_t sound_timer) {

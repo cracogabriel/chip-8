@@ -58,6 +58,7 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "c8vm.h": "c",
-    "sdl.h": "c"
+    "sdl.h": "c",
+    "stdio.h": "c"
   }
 }
