@@ -64,7 +64,7 @@ Carrega `DEMO.ch8` na memória a partir do endereço `0x300`.
 
 ---
 
-## 🧩 Ajuda
+## Ajuda
 
 Para exibir a tela de ajuda diretamente no terminal:
 
@@ -74,7 +74,19 @@ Para exibir a tela de ajuda diretamente no terminal:
 
 ---
 
-## 🏁 Exemplo Completo
+## Modo de Depuração
+
+Se o arquivo `defs.h` contiver a definição abaixo:
+
+```
+#define DEBUG 1
+```
+
+o programa exibirá mensagens de log no terminal durante a execução, úteis para depuração e análise do comportamento interno da máquina CHIP-8.
+
+---
+
+## Exemplo Completo
 
 ```
 ./chip8 jogos/PONG.ch8 --scale 8 --clock 600 --load-addr 0x200
