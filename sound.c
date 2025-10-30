@@ -1,14 +1,7 @@
 #include "sound.h"
+#include "defs.h"
 #include <stdio.h>
 #include <math.h>
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
-#define SAMPLE_RATE 44100
-#define FREQUENCY 440.0f  // Nota A4 (Lá) 
-#define AMPLITUDE 0.1f    // Volume (0.0 a 1.0)
 
 static void sound_callback(void* userdata, Uint8* stream, int len) {
     Sound* sound = (Sound*)userdata;

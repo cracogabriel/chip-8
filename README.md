@@ -1,26 +1,47 @@
-CHIP-8 Emulator
+  ██████╗██╗  ██╗██╗██████╗        ███████╗
+ ██╔════╝██║  ██║██║██╔══██╗       ██╔══██║
+ ██║     ███████║██║██████╔╝ █████╗███████║
+ ██║     ██╔══██║██║██╔═══╝  ╚════╝██╔══██║
+ ╚██████╗██║  ██║██║██║            ███████║
+  ╚═════╝╚═╝  ╚═╝╚═╝╚═╝            ╚══════╝
 
-Como compilar
+        CHIP-8 Emulator (C + SDL2)
+
+Um emulador do sistema CHIP-8 implementado em C com SDL2 para vídeo, entrada e áudio. Suporta timers a 60 Hz, som, mapeamento de teclado e execução de ROMs clássicas (ex.: TETRIS, PONG, MAZE). Parâmetros de execução incluem escala da janela, frequência da CPU e endereço de carga.
+
+Participantes
+
+- Gabriel Craco
+- Leonardo Ozima
+
+Como executar (rápido)
 
 ```
 make
+./chip8 <rom>
 ```
 
-Como executar
+ROMs disponíveis (pasta `images/`)
 
-```
-./chip8 <arquivo_rom> [escala]
-./chip8 <arquivo_rom> --scale <fator> [--clock <hz>]
-```
+Alguns dos jogos e demos incluídos para testar o emulador:
 
-Opções
+- TETRIS
+- PONG, PONG2
+- MAZE
+- INVADERS
+- TANK
+- BRIX, VBRIX
+- BLINKY, BLITZ
+- CONNECT4
+- 15PUZZLE, PUZZLE
+- TICTAC
+- KALEID, SYZYGY
+- UFO, WIPEOFF
 
-- --scale <fator>: fator de escala da janela (1 = 64x32, 10 = 640x320). Padrão: 10.
-- --clock <hz>: frequência da CPU em Hz (quantas instruções por segundo). Padrão: 500.
+Obs.: há mais ROMs na pasta `images/`; os nomes acima são apenas uma seleção.
 
-Exemplos
+Créditos
 
-```
-./chip8 images/1-chip8-logo.ch8 10
-./chip8 images/TETRIS --scale 12 --clock 700
-```
+As ROMs/jogos/demos CHIP-8 presentes na pasta `images/` foram obtidos do pacote público disponível em Zophar's Domain:
+https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html
+
