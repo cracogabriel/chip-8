@@ -8,4 +8,4 @@ all:
 	gcc -o chip8 .build/c8vm.o .build/display.o .build/sound.o .build/util.o .build/main.o `sdl2-config --libs` -lm
 
 clean:
-	rm -f *.o chip8
+	rm -rf .build chip8

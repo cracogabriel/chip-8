@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 /* Funcoes utilitarias para parse de argumentos e ajuda */
 
@@ -6,6 +7,7 @@ typedef struct {
     const char* rom_path; /* caminho para ROM */
     int scale;            /* fator de escala da janela */
     int clock_hz;         /* frequencia da CPU em Hz */
+    uint16_t load_addr;   /* endereco de carga da ROM (padrao: 0x200) */
 } AppConfig;
 
 /* Imprime a ajuda de uso */

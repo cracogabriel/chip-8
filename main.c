@@ -29,8 +29,8 @@ int main(int argc, char* argv[]) {
     }
 
     VM vm;
-    VM_Inicializar(&vm, 0x200);
-    VM_CarregarROM(&vm, (char*)cfg.rom_path, 0x200);
+    VM_Inicializar(&vm, cfg.load_addr);
+    VM_CarregarROM(&vm, (char*)cfg.rom_path, cfg.load_addr);
 
     const double MS_PER_TICK = 1000.0 / (double)cfg.clock_hz;
     const double MS_PER_TIMER = 1000.0 / (double)TIMER_HZ;

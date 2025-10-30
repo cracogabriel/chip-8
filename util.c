@@ -5,12 +5,23 @@
 #include <string.h>
 
 void print_usage(const char* prog) {
+    printf("\n");
+    printf("  ██████╗██╗  ██╗██╗██████╗        ███████╗\n");
+    printf(" ██╔════╝██║  ██║██║██╔══██╗       ██╔══██║\n");
+    printf(" ██║     ███████║██║██████╔╝ █████╗███████║\n");
+    printf(" ██║     ██╔══██║██║██╔═══╝  ╚════╝██╔══██║\n");
+    printf(" ╚██████╗██║  ██║██║██║            ███████║\n");
+    printf("  ╚═════╝╚═╝  ╚═╝╚═╝╚═╝            ╚══════╝\n");
+    printf("            Emulador CHIP-8 - v1.0\n");
+    printf("\n");
     printf("Uso: %s <arquivo_rom> [escala]\n", prog);
-    printf("     %s <arquivo_rom> --scale <fator> [--clock <hz>]\n", prog);
-    printf("Opcoes:\n");
-    printf("  --scale <fator>   Fator de escala da janela (padrao: 10)\n");
-    printf("  --clock <hz>      Frequencia da CPU em Hz (padrao: 500)\n");
-    printf("  -h, --help        Mostra esta ajuda e sai\n");
+    printf("     %s <arquivo_rom> --scale <fator> [--clock <hz>] [--load-addr <addr>]\n", prog);
+    printf("\nOpcoes:\n");
+    printf("  --scale <fator>     Fator de escala da janela (padrao: 10)\n");
+    printf("  --clock <hz>        Frequencia da CPU em Hz (padrao: 500)\n");
+    printf("  --load-addr <addr>  Endereco de carga da ROM (padrao: 0x200)\n");
+    printf("  -h, --help          Mostra esta ajuda e sai\n");
+    printf("\n");
 }
 
 int parse_args(int argc, char* argv[], const char* prog, AppConfig* cfg) {
@@ -20,6 +31,7 @@ int parse_args(int argc, char* argv[], const char* prog, AppConfig* cfg) {
     cfg->rom_path = NULL;
     cfg->scale = 10;
     cfg->clock_hz = 500;
+    cfg->load_addr = 0x200;
 
     if (argc < 2) {
         print_usage(prog);
@@ -45,6 +57,14 @@ int parse_args(int argc, char* argv[], const char* prog, AppConfig* cfg) {
         }
         if (strncmp(arg, "--clock=", 8) == 0) {
             cfg->clock_hz = atoi(arg + 8);
+            continue;
+        }
+        if (strcmp(arg, "--load-addr") == 0 && i + 1 < argc) {
+            cfg->load_addr = (uint16_t)strtol(argv[++i], NULL, 0);
+            continue;
+        }
+        if (strncmp(arg, "--load-addr=", 12) == 0) {
+            cfg->load_addr = (uint16_t)strtol(arg + 12, NULL, 0);
             continue;
         }
         if (arg[0] == '-') {
@@ -80,6 +100,10 @@ int parse_args(int argc, char* argv[], const char* prog, AppConfig* cfg) {
     if (cfg->clock_hz < 1) {
         fprintf(stderr, "Aviso: clock invalido (%d). Usando 500Hz.\n", cfg->clock_hz);
         cfg->clock_hz = 500;
+    }
+    if (cfg->load_addr > 0xFFF) {
+        fprintf(stderr, "Aviso: load_addr invalido (0x%X). Usando 0x200.\n", cfg->load_addr);
+        cfg->load_addr = 0x200;
     }
 
     return 0; 
